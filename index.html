@@ -1,0 +1,48 @@
+<html>
+<head>
+<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+<style>
+input.large {
+	width: 40%;
+	height: 20%;
+}
+</style>
+</head>
+<body>
+<form id="form">
+<p>Nom Prénom : <input type="text" id="name" name="Nom Prénom"></p>
+<p>Adresse : <input type="text" class="large" id="address" name="Adresse" onchange="osm()">
+<p>Latitude : <input type="text" id="lat" name="Latitude">
+<p>Longitude : <input type="text" id="long" name="Longitude">
+</form>
+<script>
+
+function osm() {
+	var xmlhttp = new XMLHttpRequest();
+	var url = "http://nominatim.openstreetmap.org/search?format=json&q=" + document.getElementById("address").value;
+
+	xmlhttp.onreadystatechange = function() {
+							if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+								var monjson = JSON.parse(xmlhttp.responseText);
+								affiche(monjson);
+							}
+						}
+	xmlhttp.open("GET", url, true);
+	xmlhttp.send();
+
+	function affiche(json) {
+		if (typeof json[0] != 'undefined') {
+			var jlat = json[0].lat;
+			var jlon = json[0].lon;
+			document.getElementById("lat").value=jlat;
+			document.getElementById("long").value=jlon;
+		} else {
+			document.getElementById("lat").value="indefinie";
+			document.getElementById("long").value="indefinie";
+		}
+	}
+}
+
+</script>
+</body>
+</html>
