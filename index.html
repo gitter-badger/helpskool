@@ -6,15 +6,31 @@ input.large {
 	width: 40%;
 	height: 20%;
 }
+div#namediv {
+	border-style: solid ;
+	border-width: 1px ;
+}
+.inline {
+	display: inline;
+}
+p {
+	width: 18%;
+}
+input {
+	width: 30%;
+}
 </style>
 </head>
 <body>
 <form id="form">
 <p>Nom Prénom : <input type="text" id="name" name="Nom Prénom"></p>
-<p>Adresse : <input type="text" class="large" id="address" name="Adresse" onchange="osm()">
+<p>Adresse : <textarea class="large" id="address" name="Adresse" rows=5 cols=40 onchange="osm()">Your address</textarea>
 <p>Latitude : <input type="text" id="lat" name="Latitude">
 <p>Longitude : <input type="text" id="long" name="Longitude">
 </form>
+<p class=inline>Nom Prenom </p>
+<div id="namediv" class=inline contenteditable="true">Ajouter
+</div>
 <script>
 
 function osm() {
