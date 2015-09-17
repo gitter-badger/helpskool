@@ -9,10 +9,26 @@ input.large {
 div#namediv {
 	border-style: solid ;
 	border-width: 1px ;
+	color: grey;
+	font-style: italic;
+	float: left;
+}
+div#addressdiv {
+	border-style: solid ;
+	border-width: 1px ;
+	width: 40%;
+	height: 20%;
+	color: grey;
+	font-style: italic;
+	float: left;
 }
 .inline {
 	display: inline;
 }
+.left {
+	float: left;
+}
+
 p {
 	width: 18%;
 }
@@ -28,9 +44,11 @@ input {
 <p>Latitude : <input type="text" id="lat" name="Latitude">
 <p>Longitude : <input type="text" id="long" name="Longitude">
 </form>
-<p class=inline>Nom Prenom </p>
-<div id="namediv" class=inline contenteditable="true">Ajouter
-</div>
+<p class=inline style="float: left;margin:0;">Nom Prenom </p>
+<div id="namediv" contenteditable="true">Ajouter </div>
+<p> </p>
+<p class=inline style="float: left;margin:0;">Adresse </p>
+<div id="addressdiv" contenteditable="true">Ajouter </div>
 <script>
 
 function osm() {
