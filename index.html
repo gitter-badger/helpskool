@@ -1,56 +1,120 @@
 <html>
 <head>
 <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+
 <style>
-input.large {
-	width: 40%;
-	height: 20%;
-}
-div#namediv {
+
+div,textarea {
 	border-style: solid ;
 	border-width: 1px ;
 	color: grey;
+	margin-bottom: 1%;
+	padding: .5%;
 	font-style: italic;
-	float: left;
+	font-family: verdana;
+	font-size: 100%;
+	width: 16%;
+	display: inline-block;
 }
-div#addressdiv {
-	border-style: solid ;
-	border-width: 1px ;
-	width: 40%;
+#addressdiv {
 	height: 20%;
-	color: grey;
-	font-style: italic;
-	float: left;
 }
-.inline {
-	display: inline;
+.large {
+	width: 17%;
 }
-.left {
+label {
+	padding: .5%;
+	display: block;
 	float: left;
+	width: 14%;
 }
 
-p {
-	width: 18%;
-}
 input {
-	width: 30%;
+	width: 20%;
 }
 </style>
 </head>
 <body>
+<h1>Avec form et Input</h1>
 <form id="form">
 <p>Nom Prénom : <input type="text" id="name" name="Nom Prénom"></p>
-<p>Adresse : <textarea class="large" id="address" name="Adresse" rows=5 cols=40 onchange="osm()">Your address</textarea>
+<p>Adresse : <textarea class="large" id="address" name="Adresse" rows=5 cols=60 onchange="osmdiv()">Your address</textarea>
 <p>Latitude : <input type="text" id="lat" name="Latitude">
 <p>Longitude : <input type="text" id="long" name="Longitude">
 </form>
-<p class=inline style="float: left;margin:0;">Nom Prenom </p>
-<div id="namediv" contenteditable="true">Ajouter </div>
-<p> </p>
-<p class=inline style="float: left;margin:0;">Adresse </p>
-<div id="addressdiv" contenteditable="true">Ajouter </div>
+<h1>En div</h1>
+<!--
+<div id="contenu">Lat GMAP</div><br/>
+-->
+<label>Nom Prenom </label> <div id="namediv" contenteditable="true">Ajouter </div><br/>
+<label>Adresse </label> <div id="addressdiv" contenteditable="true" onchange="osmdiv()">Ajouter </div><br/>
+<label>Adresse </label> <textarea class="large" id="address" name="Adresse" rows=5 cols=420 onchange="osmdiv()">Your address</textarea><br/>
+<label>Longitude OSM</label> <div id="longdivosm">long OSM</div><br/>
+<label>Latitude OSM</label> <div id="latdivosm">lat OSM</div><br/>
+<label>Longitude GMAP</label> <div id="longdivgmap">Long GMAP</div><br/>
+<label>Latitude GMAP</label> <div id="latdivgmap">Lat GMAP</div><br/>
+<script src="http://code.jquery.com/jquery-1.7.1.min.js"></script>
 <script>
 
+function osmdiv() {
+	var xmlhttp = new XMLHttpRequest();
+	var urlosm = "http://nominatim.openstreetmap.org/search?email=jerome.avond@alolise.org&format=json&q=" + document.getElementById("address").value;
+	var urlgmp = "https://maps.googleapis.com/maps/api/geocode/json?address=" + document.getElementById("address").value + "&key=AIzaSyBV0jQvMpkmQ2QINkntL7liDvooxYt-WfQ";
+//AIzaSyBV0jQvMpkmQ2QINkntL7liDvooxYt-WfQ
+//
+
+$.getJSON(urlgmp, function(data) {
+	//document.getElementById("contenu").innerHTML=data.results[0].formatted_address;
+	glat=data.results[0].geometry.location.lat;
+	glong=data.results[0].geometry.location.lng;
+	document.getElementById("latdivgmap").innerHTML=glat;
+	document.getElementById("longdivgmap").innerHTML=glong;
+});
+	
+
+var latlongosm = $.getJSON(urlosm, function(data) {
+	//document.getElementById("contenu").innerHTML=data;
+	olat=data[0].lat;
+	olong=data[0].lon;
+	document.getElementById("latdivosm").innerHTML=latlongosm.lat;
+	document.getElementById("longdivosm").innerHTML=latlongosm.long;
+});
+
+	xmlhttp.onreadystatechange = function() {
+							if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+								var monjson = JSON.parse(xmlhttp.responseText);
+								affiche(monjson);
+							}
+						}
+	xmlhttp.open("GET", urlosm, true);
+	xmlhttp.send();
+	xmlhttp.open("GET", urlgmp, true);
+	xmlhttp.send();
+
+	function affiche(json) {
+		if (typeof json[0] != 'undefined') {
+			var jlat = json[0].lat;
+			var jlon = json[0].lon;
+			return {
+				"lat":jlat,
+				"long":jlong
+			}
+/*
+			document.getElementById("lat").value=jlat;
+			document.getElementById("long").value=jlon;
+*/
+		} else {
+			return {
+				"lat":"indefinie",
+				"long":"indefinie"
+			}
+/*
+			document.getElementById("lat").value="indefinie";
+			document.getElementById("long").value="indefinie";
+*/
+		}
+	}
+}
 function osm() {
 	var xmlhttp = new XMLHttpRequest();
 	var url = "http://nominatim.openstreetmap.org/search?format=json&q=" + document.getElementById("address").value;
