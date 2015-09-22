@@ -8,51 +8,72 @@ div,textarea {
 	border-style: solid ;
 	border-width: 1px ;
 	color: grey;
-	margin-bottom: 1%;
+	margin-bottom: 3%;
 	padding: .5%;
 	font-style: italic;
 	font-family: verdana;
 	font-size: 100%;
-	width: 16%;
 	display: inline-block;
+	width: 40%;
+}
+.tableft,.tabright {
+	width: 48%;
+	color: black;
+	font-style: normal;
+/*
+	display: block;
+	height: 90%;
+	position: relative;
+	top: 0px;
+*/
+}
+
+.tableft {
+	float: left;
+}
+.tabright {
+	float: right;
 }
 #addressdiv {
 	height: 20%;
 }
-.large {
-	width: 17%;
-}
 label {
 	padding: .5%;
-	display: block;
+	margin-bottom: 2%;
+	display: inline-block;
 	float: left;
-	width: 14%;
+	width: 25%;
 }
 
 input {
-	width: 20%;
+	width: 40%;
+	margin-bottom: 3%;
 }
 </style>
 </head>
 <body>
+<div class=tableft>
 <h1>Avec form et Input</h1>
 <form id="form">
-<p>Nom Prénom : <input type="text" id="name" name="Nom Prénom"></p>
-<p>Adresse : <textarea class="large" id="address" name="Adresse" rows=5 cols=60 onchange="osmdiv()">Your address</textarea>
-<p>Latitude : <input type="text" id="lat" name="Latitude">
-<p>Longitude : <input type="text" id="long" name="Longitude">
+<label>Nom Prénom : </label><input type="text" id="name" name="Nom Prénom"></br>
+<label>Adresse :  </label><textarea id="address" name="Adresse" rows=5 cols=20 onchange="osmdiv()">Your address</textarea></br>
+<label>Latitude : </label><input type="text" id="lat" name="Latitude"></br>
+<label>Longitude : </label><input type="text" id="long" name="Longitude"></br>
 </form>
+</div>
+<div class=tabright>
 <h1>En div</h1>
 <!--
 <div id="contenu">Lat GMAP</div><br/>
 -->
 <label>Nom Prenom </label> <div id="namediv" contenteditable="true">Ajouter </div><br/>
 <label>Adresse </label> <div id="addressdiv" contenteditable="true" onchange="osmdiv()">Ajouter </div><br/>
-<label>Adresse </label> <textarea class="large" id="address" name="Adresse" rows=5 cols=420 onchange="osmdiv()">Your address</textarea><br/>
+<label>Adresse </label> <textarea id="address" name="Adresse" rows=5 onchange="osmdiv()">Your address</textarea><br/>
 <label>Longitude OSM</label> <div id="longdivosm">long OSM</div><br/>
 <label>Latitude OSM</label> <div id="latdivosm">lat OSM</div><br/>
 <label>Longitude GMAP</label> <div id="longdivgmap">Long GMAP</div><br/>
 <label>Latitude GMAP</label> <div id="latdivgmap">Lat GMAP</div><br/>
+</div>
 <script src="http://code.jquery.com/jquery-1.7.1.min.js"></script>
 <script>
 
