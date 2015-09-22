@@ -9,7 +9,8 @@ div,textarea {
 	border-width: 1px ;
 	color: grey;
 	margin-bottom: 3%;
-	padding: .5%;
+	margin-right: 3%;
+	padding: .8%;
 	font-style: italic;
 	font-family: verdana;
 	font-size: 100%;
@@ -17,7 +18,7 @@ div,textarea {
 	width: 40%;
 }
 .tableft,.tabright {
-	width: 48%;
+	width: 46%;
 	color: black;
 	font-style: normal;
 /*
@@ -33,9 +34,10 @@ div,textarea {
 }
 .tabright {
 	float: right;
+	margin-right: 0px;
 }
 #addressdiv {
-	height: 20%;
+	height: 11%;
 }
 label {
 	padding: .5%;
@@ -52,23 +54,26 @@ input {
 </style>
 </head>
 <body>
+<p id="contenu"></p>
 <div class=tableft>
 <h1>Avec form et Input</h1>
 <form id="form">
 <label>Nom Prénom : </label><input type="text" id="name" name="Nom Prénom"></br>
-<label>Adresse :  </label><textarea id="address" name="Adresse" rows=5 cols=20 onchange="osmdiv()">Your address</textarea></br>
-<label>Latitude : </label><input type="text" id="lat" name="Latitude"></br>
-<label>Longitude : </label><input type="text" id="long" name="Longitude"></br>
+<label>Adresse :  </label><textarea id="address" name="Adresse" rows=4 cols=20 onchange="osmdiv()">Your address</textarea></br>
 </form>
 </div>
 <div class=tabright>
 <h1>En div</h1>
 <!--
+<label>Latitude : </label><input type="text" id="lat" name="Latitude"></br>
+<label>Longitude : </label><input type="text" id="long" name="Longitude"></br>
 <div id="contenu">Lat GMAP</div><br/>
 -->
 <label>Nom Prenom </label> <div id="namediv" contenteditable="true">Ajouter </div><br/>
 <label>Adresse </label> <div id="addressdiv" contenteditable="true" onchange="osmdiv()">Ajouter </div><br/>
-<label>Adresse </label> <textarea id="address" name="Adresse" rows=5 onchange="osmdiv()">Your address</textarea><br/>
+<label>Adresse </label> <textarea id="address" name="Adresse" rows=4 onchange="osmdiv()">Pas de onchange en div mieux vaut un textarea...</textarea><br/>
+</div>
+<div class=tableft>
 <label>Longitude OSM</label> <div id="longdivosm">long OSM</div><br/>
 <label>Latitude OSM</label> <div id="latdivosm">lat OSM</div><br/>
 <label>Longitude GMAP</label> <div id="longdivgmap">Long GMAP</div><br/>
@@ -77,6 +82,9 @@ input {
 <script src="http://code.jquery.com/jquery-1.7.1.min.js"></script>
 <script>
 
+function tarace() {
+	
+}
 function osmdiv() {
 	var xmlhttp = new XMLHttpRequest();
 	var urlosm = "http://nominatim.openstreetmap.org/search?email=jerome.avond@alolise.org&format=json&q=" + document.getElementById("address").value;
@@ -93,14 +101,16 @@ $.getJSON(urlgmp, function(data) {
 });
 	
 
-var latlongosm = $.getJSON(urlosm, function(data) {
+$.getJSON(urlosm, function(data) {
 	//document.getElementById("contenu").innerHTML=data;
+	//document.getElementById("contenu").innerHTML=urlosm;
 	olat=data[0].lat;
-	olong=data[0].lon;
-	document.getElementById("latdivosm").innerHTML=latlongosm.lat;
-	document.getElementById("longdivosm").innerHTML=latlongosm.long;
+	olon=data[0].lon;
+	document.getElementById("latdivosm").innerHTML=olat;
+	document.getElementById("longdivosm").innerHTML=olon;
 });
 
+/*
 	xmlhttp.onreadystatechange = function() {
 							if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
 								var monjson = JSON.parse(xmlhttp.responseText);
@@ -120,22 +130,20 @@ var latlongosm = $.getJSON(urlosm, function(data) {
 				"lat":jlat,
 				"long":jlong
 			}
-/*
 			document.getElementById("lat").value=jlat;
 			document.getElementById("long").value=jlon;
-*/
 		} else {
 			return {
 				"lat":"indefinie",
 				"long":"indefinie"
 			}
-/*
 			document.getElementById("lat").value="indefinie";
 			document.getElementById("long").value="indefinie";
-*/
 		}
 	}
+*/
 }
+
 function osm() {
 	var xmlhttp = new XMLHttpRequest();
 	var url = "http://nominatim.openstreetmap.org/search?format=json&q=" + document.getElementById("address").value;
