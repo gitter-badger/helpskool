@@ -82,7 +82,9 @@ input {
 <script src="http://code.jquery.com/jquery-1.7.1.min.js"></script>
 <script>
 
-function tarace() {
+function traitement(tlat,tlon) {
+	
+	document.getElementById("contenu").innerHTML=" lat : " + tlat + " long : " + tlon;
 	
 }
 function osmdiv() {
@@ -98,6 +100,7 @@ $.getJSON(urlgmp, function(data) {
 	glong=data.results[0].geometry.location.lng;
 	document.getElementById("latdivgmap").innerHTML=glat;
 	document.getElementById("longdivgmap").innerHTML=glong;
+	traitement(glat,glong);
 });
 	
 
