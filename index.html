@@ -4,13 +4,14 @@
 
 <style>
 
-div,textarea {
+div,textarea,input {
 	border-style: solid ;
 	border-width: 1px ;
-	color: grey;
+	border-color: lightgrey;
 	margin-bottom: 3%;
 	margin-right: 3%;
 	padding: .8%;
+	color: grey;
 	font-style: italic;
 	font-family: verdana;
 	font-size: 100%;
@@ -18,7 +19,7 @@ div,textarea {
 	width: 40%;
 }
 .tableft,.tabright {
-	width: 46%;
+	width: 28%;
 	color: black;
 	font-style: normal;
 /*
@@ -36,62 +37,100 @@ div,textarea {
 	float: right;
 	margin-right: 0px;
 }
+.valid {
+	padding: 0;
+	color: black;
+	border-color: lightgrey;
+	background: #ffffff; /* Old browsers */
+	background: -moz-linear-gradient(top, #ffffff 0%, #f1f1f1 50%, #e1e1e1 51%, #f6f6f6 100%); /* FF3.6+ */
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#ffffff), color-stop(50%,#f1f1f1), color-stop(51%,#e1e1e1), color-stop(100%,#f6f6f6)); /* Chrome,Safari4+ */
+	background: -webkit-linear-gradient(top, #ffffff 0%,#f1f1f1 50%,#e1e1e1 51%,#f6f6f6 100%); /* Chrome10+,Safari5.1+ */
+	background: -o-linear-gradient(top, #ffffff 0%,#f1f1f1 50%,#e1e1e1 51%,#f6f6f6 100%); /* Opera 11.10+ */
+	background: -ms-linear-gradient(top, #ffffff 0%,#f1f1f1 50%,#e1e1e1 51%,#f6f6f6 100%); /* IE10+ */
+	background: linear-gradient(to bottom, #ffffff 0%,#f1f1f1 50%,#e1e1e1 51%,#f6f6f6 100%); /* W3C */
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#f6f6f6',GradientType=0 ); /* IE6-9 */
+	font-style: normal;
+	font-family: arial;
+	font-size: 100%;
+	text-align: center;
+}
+	
 #addressdiv {
-	height: 11%;
+	height: 5em;
+}
+#contenu {
+	text-align: center;
 }
 label {
 	padding: .5%;
 	margin-bottom: 2%;
 	display: inline-block;
 	float: left;
-	width: 25%;
+	width: 40%;
 }
 
 input {
-	width: 40%;
 	margin-bottom: 3%;
 }
 </style>
 </head>
 <body>
 <div class=tableft>
-<h1>Avec form et Input</h1>
-<form id="form">
-<label>Nom Prénom : </label><input type="text" id="name" name="Nom Prénom"></br>
-<label>Adresse :  </label><textarea id="address" name="Adresse" rows=4 cols=20 onchange="osmdiv()">Your address</textarea></br>
+<h2>Avec form, input et textarea</h2>
+<form id="form" onSubmit="valider(); return false;">
+<label>Nom Prénom : </label><input type="text" id="name" name="Nom Prénom" value="Ajouter"></br>
+<label>Adresse :  </label><textarea id="address" name="Adresse" rows=4 onchange="osmdiv(this)">Ajouter</textarea></br>
+<input type="submit" value="Valider" class="valid">
 <p>Rentrez votre adresse et appuyez sur [Tab]</p>
 </form>
-</div>
-<div class=tabright>
-<h1>En div</h1>
-<!--
-<p id="contenu"></p>
-<label>Latitude : </label><input type="text" id="lat" name="Latitude"></br>
-<label>Longitude : </label><input type="text" id="long" name="Longitude"></br>
-<div id="contenu">Lat GMAP</div><br/>
--->
-<label>Nom Prenom </label> <div id="namediv" contenteditable="true">Ajouter </div><br/>
-<label>Adresse </label> <div id="addressdiv" contenteditable="true" onchange="osmdiv()">Ajouter </div><br/>
-<label>Adresse </label> <textarea id="address2" name="Adresse" rows=4 onchange="osmdiv()">Pas de onchange en div mieux vaut un textarea...</textarea><br/>
 </div>
 <div class=tableft>
 <label>Longitude OSM</label> <div id="longdivosm">long OSM</div><br/>
 <label>Latitude OSM</label> <div id="latdivosm">lat OSM</div><br/>
 <label>Longitude GMAP</label> <div id="longdivgmap">Long GMAP</div><br/>
 <label>Latitude GMAP</label> <div id="latdivgmap">Lat GMAP</div><br/>
+<p id="contenu" ></p>
+</div>
+<div class=tableft>
+<h2>En div contenteditable et oninput</h2>
+<!--
+<div class=tabright>
+ onclick="valider()">
+<label>Latitude : </label><input type="text" id="lat" name="Latitude"></br>
+<label>Longitude : </label><input type="text" id="long" name="Longitude"></br>
+<div id="contenu">Lat GMAP</div><br/>
+<label>Adresse </label> <textarea id="address2" name="Adresse" rows=4 onchange="osmdiv()">Pas de onchange en div mieux vaut un textarea...</textarea><br/>
+-->
+<label>Nom Prenom </label> <div id="namediv" contenteditable="true">Ajouter </div><br/>
+<label>Adresse </label> <div id="addressdiv" contenteditable="true" oninput="osmdiv(this)">Ajouter </div><br/>
+<div id="validerdiv" class="valid" onclick="valider()">Valider</div><br/>
+<p>Rentrez votre adresse et appuyez sur [Tab]</p>
 </div>
 <script src="http://code.jquery.com/jquery-1.7.1.min.js"></script>
 <script>
 
 function traitement(tlat,tlon) {
 	
-	document.getElementById("contenu").innerHTML=" lat : " + tlat + " long : " + tlon;
+//	document.getElementById("contenu").innerHTML=" lat : " + tlat + " long : " + tlon;
 	
 }
-function osmdiv() {
+function valider() {
+	
+	document.getElementById("contenu").innerHTML=" Contenu Validé ";
+	
+}
+function osmdiv(element) {
+//	document.getElementById("contenu").innerHTML=" element.type : " + element.innerHTML + " tag : " + element.tagName ;
+	if (element.tag == "DIV") {
+		source = element.innerHTML;
+	} else if (element.tag == "TEXTAREA") {
+		source = element.value;
+	} else {
+		source = element.value;
+	}
 	var xmlhttp = new XMLHttpRequest();
-	var urlosm = "http://nominatim.openstreetmap.org/search?email=jerome.avond@alolise.org&format=json&q=" + document.getElementById("address").value;
-	var urlgmp = "https://maps.googleapis.com/maps/api/geocode/json?address=" + document.getElementById("address").value + "&key=AIzaSyBV0jQvMpkmQ2QINkntL7liDvooxYt-WfQ";
+	var urlosm = "http://nominatim.openstreetmap.org/search?email=jerome.avond@alolise.org&format=json&q=" + source ;
+	var urlgmp = "https://maps.googleapis.com/maps/api/geocode/json?address=" + source + "&key=AIzaSyBV0jQvMpkmQ2QINkntL7liDvooxYt-WfQ";
 //AIzaSyBV0jQvMpkmQ2QINkntL7liDvooxYt-WfQ
 //
 
@@ -115,6 +154,10 @@ $.getJSON(urlosm, function(data) {
 });
 
 /*
+	var urlosm = "http://nominatim.openstreetmap.org/search?email=jerome.avond@alolise.org&format=json&q=" + document.getElementById("address").value;
+	var urlgmp = "https://maps.googleapis.com/maps/api/geocode/json?address=" + document.getElementById("address").value + "&key=AIzaSyBV0jQvMpkmQ2QINkntL7liDvooxYt-WfQ";
+
+
 	xmlhttp.onreadystatechange = function() {
 							if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
 								var monjson = JSON.parse(xmlhttp.responseText);
