@@ -54,24 +54,25 @@ input {
 </style>
 </head>
 <body>
-<p id="contenu"></p>
 <div class=tableft>
 <h1>Avec form et Input</h1>
 <form id="form">
 <label>Nom Prénom : </label><input type="text" id="name" name="Nom Prénom"></br>
 <label>Adresse :  </label><textarea id="address" name="Adresse" rows=4 cols=20 onchange="osmdiv()">Your address</textarea></br>
+<p>Rentrez votre adresse et appuyez sur [Tab]</p>
 </form>
 </div>
 <div class=tabright>
 <h1>En div</h1>
 <!--
+<p id="contenu"></p>
 <label>Latitude : </label><input type="text" id="lat" name="Latitude"></br>
 <label>Longitude : </label><input type="text" id="long" name="Longitude"></br>
 <div id="contenu">Lat GMAP</div><br/>
 -->
 <label>Nom Prenom </label> <div id="namediv" contenteditable="true">Ajouter </div><br/>
 <label>Adresse </label> <div id="addressdiv" contenteditable="true" onchange="osmdiv()">Ajouter </div><br/>
-<label>Adresse </label> <textarea id="address" name="Adresse" rows=4 onchange="osmdiv()">Pas de onchange en div mieux vaut un textarea...</textarea><br/>
+<label>Adresse </label> <textarea id="address2" name="Adresse" rows=4 onchange="osmdiv()">Pas de onchange en div mieux vaut un textarea...</textarea><br/>
 </div>
 <div class=tableft>
 <label>Longitude OSM</label> <div id="longdivosm">long OSM</div><br/>
