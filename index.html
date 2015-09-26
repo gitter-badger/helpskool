@@ -1,78 +1,7 @@
 <html>
 <head>
 <meta http-equiv="content-type" content="text/html; charset=utf-8" />
-
-<style>
-
-div,textarea,input {
-	border-style: solid ;
-	border-width: 1px ;
-	border-color: lightgrey;
-	margin-bottom: 3%;
-	margin-right: 3%;
-	padding: .8%;
-	color: grey;
-	font-style: italic;
-	font-family: verdana;
-	font-size: 100%;
-	display: inline-block;
-	width: 40%;
-}
-.tableft,.tabright {
-	width: 28%;
-	color: black;
-	font-style: normal;
-/*
-	display: block;
-	height: 90%;
-	position: relative;
-	top: 0px;
-*/
-}
-
-.tableft {
-	float: left;
-}
-.tabright {
-	float: right;
-	margin-right: 0px;
-}
-.valid {
-	padding: 0;
-	color: black;
-	border-color: lightgrey;
-	background: #ffffff; /* Old browsers */
-	background: -moz-linear-gradient(top, #ffffff 0%, #f1f1f1 50%, #e1e1e1 51%, #f6f6f6 100%); /* FF3.6+ */
-	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#ffffff), color-stop(50%,#f1f1f1), color-stop(51%,#e1e1e1), color-stop(100%,#f6f6f6)); /* Chrome,Safari4+ */
-	background: -webkit-linear-gradient(top, #ffffff 0%,#f1f1f1 50%,#e1e1e1 51%,#f6f6f6 100%); /* Chrome10+,Safari5.1+ */
-	background: -o-linear-gradient(top, #ffffff 0%,#f1f1f1 50%,#e1e1e1 51%,#f6f6f6 100%); /* Opera 11.10+ */
-	background: -ms-linear-gradient(top, #ffffff 0%,#f1f1f1 50%,#e1e1e1 51%,#f6f6f6 100%); /* IE10+ */
-	background: linear-gradient(to bottom, #ffffff 0%,#f1f1f1 50%,#e1e1e1 51%,#f6f6f6 100%); /* W3C */
-	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#f6f6f6',GradientType=0 ); /* IE6-9 */
-	font-style: normal;
-	font-family: arial;
-	font-size: 100%;
-	text-align: center;
-}
-	
-#addressdiv {
-	height: 5em;
-}
-#contenu {
-	text-align: center;
-}
-label {
-	padding: .5%;
-	margin-bottom: 2%;
-	display: inline-block;
-	float: left;
-	width: 40%;
-}
-
-input {
-	margin-bottom: 3%;
-}
-</style>
+<link rel="stylesheet" href="index.css">
 </head>
 <body>
 <div class=tableft>
@@ -85,42 +14,32 @@ input {
 </form>
 </div>
 <div class=tableft>
-<label>Longitude OSM</label> <div id="longdivosm">long OSM</div><br/>
+<div class=box>
+<label>Longitude OSM</label> <div id="longdivosm">long OSM</div>
 <label>Latitude OSM</label> <div id="latdivosm">lat OSM</div><br/>
-<label>Longitude GMAP</label> <div id="longdivgmap">Long GMAP</div><br/>
+<label>Longitude GMAP</label> <div id="longdivgmap">Long GMAP</div>
 <label>Latitude GMAP</label> <div id="latdivgmap">Lat GMAP</div><br/>
 <p id="contenu" ></p>
 </div>
+<iframe class=box id="carte" src="http://www.openstreetmap.org/export/embed.html?bbox=0.33856,46.58097,0.34742,46.58438&amp;layer=mapquest&amp;marker=46.58143,0.33957"></iframe><br />
+<div class=box><a href="http://www.openstreetmap.org/?lat=46.582675&amp;lon=0.34299&amp;zoom=16&amp;layers=Q&amp;mlat=46.58143&amp;mlon=0.33957">Voir une carte plus grande</a></div>
+</div>
 <div class=tableft>
 <h2>En div contenteditable et oninput</h2>
-<!--
-<div class=tabright>
- onclick="valider()">
-<label>Latitude : </label><input type="text" id="lat" name="Latitude"></br>
-<label>Longitude : </label><input type="text" id="long" name="Longitude"></br>
-<div id="contenu">Lat GMAP</div><br/>
-<label>Adresse </label> <textarea id="address2" name="Adresse" rows=4 onchange="osmdiv()">Pas de onchange en div mieux vaut un textarea...</textarea><br/>
--->
 <label>Nom Prenom </label> <div id="namediv" contenteditable="true">Ajouter </div><br/>
 <label>Adresse </label> <div id="addressdiv" contenteditable="true" oninput="osmdiv(this)">Ajouter </div><br/>
 <div id="validerdiv" class="valid" onclick="valider()">Valider</div><br/>
 <p>Rentrez votre adresse et appuyez sur [Tab]</p>
 </div>
+<div id="demoMap" style="height:250px"></div>
 <script src="http://code.jquery.com/jquery-1.7.1.min.js"></script>
+<script src="ol.js"></script>
 <script>
-
-function traitement(tlat,tlon) {
-	
-//	document.getElementById("contenu").innerHTML=" lat : " + tlat + " long : " + tlon;
-	
-}
+      
 function valider() {
-	
 	document.getElementById("contenu").innerHTML=" Contenu Validé ";
-	
 }
 function osmdiv(element) {
-//	document.getElementById("contenu").innerHTML=" element.type : " + element.innerHTML + " tag : " + element.tagName ;
 	if (element.tag == "DIV") {
 		source = element.innerHTML;
 	} else if (element.tag == "TEXTAREA") {
@@ -131,8 +50,6 @@ function osmdiv(element) {
 	var xmlhttp = new XMLHttpRequest();
 	var urlosm = "http://nominatim.openstreetmap.org/search?email=jerome.avond@alolise.org&format=json&q=" + source ;
 	var urlgmp = "https://maps.googleapis.com/maps/api/geocode/json?address=" + source + "&key=AIzaSyBV0jQvMpkmQ2QINkntL7liDvooxYt-WfQ";
-//AIzaSyBV0jQvMpkmQ2QINkntL7liDvooxYt-WfQ
-//
 
 $.getJSON(urlgmp, function(data) {
 	//document.getElementById("contenu").innerHTML=data.results[0].formatted_address;
@@ -145,76 +62,26 @@ $.getJSON(urlgmp, function(data) {
 	
 
 $.getJSON(urlosm, function(data) {
-	//document.getElementById("contenu").innerHTML=data;
-	//document.getElementById("contenu").innerHTML=urlosm;
 	olat=data[0].lat;
 	olon=data[0].lon;
+	bolon1=olon-0.005;
+	bolat1=olat-0.005;
+	bolon2=olon+0.005;
+	bolat2=olat+0.005;
+	
 	document.getElementById("latdivosm").innerHTML=olat;
 	document.getElementById("longdivosm").innerHTML=olon;
+	maposm="http://www.openstreetmap.org/export/embed.html?bbox="+bolon1+","+bolat1+","+bolon2+","+bolat2+"&amp;layer=mapquest&amp;marker="+olat+","+olon;
+	document.getElementById("carte").src=maposm;
+	document.getElementById("contenu").innerHTML=maposm;
+	document.getElementById("contenu").innerHTML=maposm;
+
+    map = new OpenLayers.Map("demoMap");
+    map.addLayer(new OpenLayers.Layer.OSM());
+    map.zoomToMaxExtent();
+
 });
 
-/*
-	var urlosm = "http://nominatim.openstreetmap.org/search?email=jerome.avond@alolise.org&format=json&q=" + document.getElementById("address").value;
-	var urlgmp = "https://maps.googleapis.com/maps/api/geocode/json?address=" + document.getElementById("address").value + "&key=AIzaSyBV0jQvMpkmQ2QINkntL7liDvooxYt-WfQ";
-
-
-	xmlhttp.onreadystatechange = function() {
-							if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
-								var monjson = JSON.parse(xmlhttp.responseText);
-								affiche(monjson);
-							}
-						}
-	xmlhttp.open("GET", urlosm, true);
-	xmlhttp.send();
-	xmlhttp.open("GET", urlgmp, true);
-	xmlhttp.send();
-
-	function affiche(json) {
-		if (typeof json[0] != 'undefined') {
-			var jlat = json[0].lat;
-			var jlon = json[0].lon;
-			return {
-				"lat":jlat,
-				"long":jlong
-			}
-			document.getElementById("lat").value=jlat;
-			document.getElementById("long").value=jlon;
-		} else {
-			return {
-				"lat":"indefinie",
-				"long":"indefinie"
-			}
-			document.getElementById("lat").value="indefinie";
-			document.getElementById("long").value="indefinie";
-		}
-	}
-*/
-}
-
-function osm() {
-	var xmlhttp = new XMLHttpRequest();
-	var url = "http://nominatim.openstreetmap.org/search?format=json&q=" + document.getElementById("address").value;
-
-	xmlhttp.onreadystatechange = function() {
-							if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
-								var monjson = JSON.parse(xmlhttp.responseText);
-								affiche(monjson);
-							}
-						}
-	xmlhttp.open("GET", url, true);
-	xmlhttp.send();
-
-	function affiche(json) {
-		if (typeof json[0] != 'undefined') {
-			var jlat = json[0].lat;
-			var jlon = json[0].lon;
-			document.getElementById("lat").value=jlat;
-			document.getElementById("long").value=jlon;
-		} else {
-			document.getElementById("lat").value="indefinie";
-			document.getElementById("long").value="indefinie";
-		}
-	}
 }
 
 </script>
