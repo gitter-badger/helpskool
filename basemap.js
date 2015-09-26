@@ -31,10 +31,18 @@ $.getJSON(urlosm, function(data) {
 	bolat1=olat-0.005;
 	bolon2=olon+0.005;
 	bolat2=olat+0.005;
+	delta=0.12
+	bolon1=olon-delta;
+	bolat1=olat-delta;
+	bolon2=olon+delta;
+	bolat2=olat+delta;
 	
 	document.getElementById("latdivosm").innerHTML=olat;
 	document.getElementById("longdivosm").innerHTML=olon;
-	maposm="http://www.openstreetmap.org/export/embed.html?bbox="+bolon1+","+bolat1+","+bolon2+","+bolat2+"&amp;layer=mapquest&amp;marker="+olat+","+olon;
+	maposm="http://www.openstreetmap.org/export/embed.html?bbox="
+		+bolon1+","+bolat1+","
+		+bolon2+","+bolat2
+		+"&amp;layer=mapquest&amp;marker="+olat+","+olon ;
 	document.getElementById("carte").src=maposm;
 	document.getElementById("contenu").innerHTML=maposm;
 	document.getElementById("contenu").innerHTML=maposm;
@@ -46,5 +54,3 @@ $.getJSON(urlosm, function(data) {
 });
 
 }
-
-
