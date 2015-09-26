@@ -1,4 +1,3 @@
-      
 function valider() {
 	document.getElementById("contenu").innerHTML=" Contenu Validé ";
 }
@@ -20,37 +19,33 @@ $.getJSON(urlgmp, function(data) {
 	glong=data.results[0].geometry.location.lng;
 	document.getElementById("latdivgmap").innerHTML=glat;
 	document.getElementById("longdivgmap").innerHTML=glong;
-	traitement(glat,glong);
 });
 	
 
 $.getJSON(urlosm, function(data) {
 	olat=data[0].lat;
 	olon=data[0].lon;
-	bolon1=olon-0.005;
-	bolat1=olat-0.005;
-	bolon2=olon+0.005;
-	bolat2=olat+0.005;
-	delta=0.12
-	bolon1=olon-delta;
-	bolat1=olat-delta;
-	bolon2=olon+delta;
-	bolat2=olat+delta;
+	deltav=0.05;
+	deltah=0.05;
+	bolon1=olon-deltah;
+	bolat1=olat-deltav;
+	bolon2=olon+deltah;
+	bolat2=olat+deltav;
 	
 	document.getElementById("latdivosm").innerHTML=olat;
 	document.getElementById("longdivosm").innerHTML=olon;
-	maposm="http://www.openstreetmap.org/export/embed.html?bbox="
-		+bolon1+","+bolat1+","
-		+bolon2+","+bolat2
-		+"&amp;layer=mapquest&amp;marker="+olat+","+olon ;
+	maposm="http://www.openstreetmap.org/export/embed.html?"
+		+"bbox="
+		+bolon1+","+bolat1+","+bolon2+","+bolat2
+		+"&amp;"
+		+"layer=mapquest"
+		+"&amp;"
+		+"marker="+olat+","+olon ;
+	//maposm="http://api.openstreetmap.org/api/0.6/map?bbox="+bolon1+","+bolat2+","+bolon2+","+bolat3;
 	document.getElementById("carte").src=maposm;
 	document.getElementById("contenu").innerHTML=maposm;
-	document.getElementById("contenu").innerHTML=maposm;
-
-    map = new OpenLayers.Map("demoMap");
-    map.addLayer(new OpenLayers.Layer.OSM());
-    map.zoomToMaxExtent();
 
 });
 
+	document.getElementById('carte').contentWindow.location.reload(true);
 }
